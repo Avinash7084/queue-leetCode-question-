@@ -1,0 +1,33 @@
+class Solution {
+public:
+    string predictPartyVictory(string senate) {
+        queue<int> R;  
+        queue<int> D; 
+        int n = senate.size();
+
+        // Put index of each senator into the right queue
+        for (int i = 0; i < n; i++) {
+            if (senate[i] == 'R')
+                R.push(i);
+            else
+                D.push(i);
+        }
+
+        // Run until one party has no senators left
+        while (!R.empty() && !D.empty()) {
+            int r = R.front(); R.pop();
+            int d = D.front(); D.pop();
+
+            // The one with the smaller index gets to act first
+            if (r < d)
+                R.push(r + n);  // Radiant bans Dire, goes to next round
+            else
+                D.push(d + n);  
+        }
+
+        if (R.empty())
+            return "Dire";
+        else
+            return "Radiant";
+    }
+};
